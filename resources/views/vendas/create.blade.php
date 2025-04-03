@@ -1,1 +1,1 @@
-@include('clientes.form')
+@include('vendas.form')
