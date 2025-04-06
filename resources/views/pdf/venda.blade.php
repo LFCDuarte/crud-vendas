@@ -22,7 +22,7 @@
         <p><strong>Cliente:</strong> {{ $venda->cliente->nome }}</p>
         <p><strong>Vendedor:</strong> {{ $venda->vendedor->name }}</p>
         <p><strong>Status:</strong> {{ $venda->status_formatado }}</p>
-        <p><strong>Forma de Pagamento:</strong> 
+        <p><strong>Forma de Pagamento:</strong>
             @switch($venda->forma_pagamento)
                 @case('dinheiro')
                     Dinheiro
@@ -64,8 +64,31 @@
         </tbody>
     </table>
 
+    @if($venda->parcelas && $venda->parcelas->count() > 0)
+    <div style="margin-top: 30px;">
+        <h3>Parcelas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Vencimento</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($venda->parcelas as $parcela)
+                <tr>
+                    <td>{{ $parcela->numero }}/{{ $venda->parcelas->count() }}</td>
+                    <td>{{ $parcela->data_vencimento->format('d/m/Y') }}</td>
+                    <td>R$ {{ number_format($parcela->valor, 2, ',', '.') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     <div class="total">
         <p>Total: {{ $venda->valor_total_formatado }}</p>
     </div>
+    @endif
 </body>
 </html>

@@ -24,7 +24,6 @@
                 <th>Cliente</th>
                 <th>Vendedor</th>
                 <th>Status</th>
-                <th>Total</th>
             </tr>
         </thead>
         <tbody>
@@ -35,10 +34,37 @@
                 <td>{{ $venda->cliente->nome }}</td>
                 <td>{{ $venda->vendedor->name }}</td>
                 <td>{{ $venda->status_formatado }}</td>
-                <td>{{ $venda->valor_total_formatado }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+    @if($venda->parcelas && $venda->parcelas->count() > 0)
+    <div style="margin-top: 30px;">
+        <h3>Parcelas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Vencimento</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($venda->parcelas as $parcela)
+                <tr>
+                    <td>{{ $parcela->numero }}/{{ $venda->parcelas->count() }}</td>
+                    <td>{{ $parcela->data_vencimento->format('d/m/Y') }}</td>
+                    <td>R$ {{ number_format($parcela->valor, 2, ',', '.') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
+
+    <div style="margin-top: 20px; text-align: right;">
+        <p style="margin: 0; font-weight: bold;">Total: {{ $venda->valor_total_formatado }}</p>
+    </div>
 </body>
 </html>
